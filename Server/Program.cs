@@ -40,7 +40,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 // routes
 
-app.MapGet("/", (State state) =>
+app.MapGet("/", async () =>
 {
     using var data = MySqlHelper.ExecuteQueryAsync(
     connectionString,
