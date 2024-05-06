@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 // db
-string connectionString = "uid=root;pwd=rootroot;database=homenet;server=localhost;port=3306";
+string connectionString = "uid=root;pwd=Mysql@123;database=homenet;server=localhost;port=3306";
 
 
 // Configure the HTTP request pipeline.
