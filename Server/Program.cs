@@ -7,11 +7,11 @@ using System.Text.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
 // db
-string connectionString = "uid=root;pwd=;database=homenet;server=localhost;port=3307";
+string connectionString = "uid=root;pwd=Mysql@123;database=homenet;server=localhost;port=3306";
 
-var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -39,18 +39,29 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 // routes
+app.UseRouting();
 
-app.MapGet("/", async () =>
+app.MapGet("/api/adresser", async () =>
 {
-    using var data = await MySqlHelper.ExecuteQueryAsync(
-    connectionString,
-    "SELECT * FROM adresser"
-    );
-    var results = DataTableToList(data);
+    var results = new List<dynamic>();
+    using (var connection = new MySqlConnection(connectionString))
+    {
+        await connection.OpenAsync();
+        using (var command = new MySqlCommand("SELECT * FROM adresser", connection))
+        using (var reader = await command.ExecuteReaderAsync())
+        {
+            while (await reader.ReadAsync())
+            {
+                var data = new ExpandoObject() as IDictionary<string, Object>;
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    data.Add(reader.GetName(i), reader[i]);
+                }
+                results.Add(data);
+            }
+        }
+    }
     return Results.Json(results);
 });
-
-
-app.UseRouting();
 
 app.Run();
