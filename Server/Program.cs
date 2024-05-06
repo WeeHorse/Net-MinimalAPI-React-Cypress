@@ -42,7 +42,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.MapGet("/", async () =>
 {
-    using var data = MySqlHelper.ExecuteQueryAsync(
+    using var data = await MySqlHelper.ExecuteQueryAsync(
     connectionString,
     "SELECT * FROM adresser"
     );
