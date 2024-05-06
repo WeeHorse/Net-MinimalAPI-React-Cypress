@@ -41,19 +41,10 @@ app.MapGet("/", (State state) =>
 {
     using var reader = MySqlHelper.ExecuteReader(
     state.DB,
-    "SELECT ort FROM adresser LIMIT 1"
+    "SELECT * FROM adresser"
     );
-
-    var ort = new Record(string ort);        
-
-    if (reader.Read())
-    {
-        return reader.GetString("ort");
-    }
-    else
-    {
-        return "whatever";
-    }
+    var results = DataTableToList(reader);
+    return Results.Json(results);
 });
 
 
