@@ -8,6 +8,8 @@ using System.Dynamic;
 using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.webHost.ConfigureKestrel(options => options.ListenAnyIP = 5000);
+
 var app = builder.Build();
 
 // db
