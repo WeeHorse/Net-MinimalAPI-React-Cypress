@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 // db
-string connectionString = "uid=root;pwd=Mysql@123;database=homenet;server=localhost;port=3306";
+string connectionString = "uid=root;pwd=rootroot;database=homenet;server=localhost;port=3306";
 
 
 // Configure the HTTP request pipeline.
@@ -23,24 +23,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// configure defaults
-app.UseDefaultFiles(new DefaultFilesOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "frontend")),
-    RequestPath = ""
-});
-
-// Configure custom static files
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "frontend")),
-    RequestPath = ""
-});
-
 // routes
 app.UseRouting();
+
+app.MapGet("/hello", async () => "Hello");
 
 app.MapGet("/api/adresser", async () =>
 {
@@ -63,6 +49,22 @@ app.MapGet("/api/adresser", async () =>
         }
     }
     return Results.Json(results);
+});
+
+// configure defaults
+app.UseDefaultFiles(new DefaultFilesOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "frontend")),
+    RequestPath = ""
+});
+
+// Configure custom static files
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "frontend")),
+    RequestPath = ""
 });
 
 app.Run();
