@@ -4,7 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Text.Json;
-
+using System.Dynamic;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
