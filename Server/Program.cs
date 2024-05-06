@@ -1,12 +1,14 @@
-using Microsoft.Extensions.FileProviders;
-using System.IO;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
+using System.Data;
+using System.Text.Json;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // db
-State state = new("uid=root;pwd=;database=homenet;server=localhost;port=3307");
-builder.Services.AddSingleton(state);
+string connectionString = "uid=root;pwd=;database=homenet;server=localhost;port=3307";
 
 var app = builder.Build();
 
@@ -39,11 +41,11 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.MapGet("/", (State state) =>
 {
-    using var reader = MySqlHelper.ExecuteReader(
-    state.DB,
+    using var data = MySqlHelper.ExecuteQueryAsync(
+    connectionString,
     "SELECT * FROM adresser"
     );
-    var results = DataTableToList(reader);
+    var results = DataTableToList(data);
     return Results.Json(results);
 });
 
